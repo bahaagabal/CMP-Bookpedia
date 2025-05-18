@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.plcoding.bookpedia.book.domain.Book
+import com.plcoding.bookpedia.book.presentation.book_list.components.BookList
 import com.plcoding.bookpedia.book.presentation.book_list.components.BookSearchBar
 
 @Preview
@@ -25,5 +27,16 @@ private fun BookSearchBarPreview() {
             modifier = Modifier.fillMaxWidth()
         )
     }
+
+}
+
+@Preview
+@Composable
+private fun BookListPreviews() {
+
+    BookList(
+        booksList = listOf(),
+        onBookItemClicked = {}
+    )
 
 }
