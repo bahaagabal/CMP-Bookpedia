@@ -194,7 +194,7 @@ fun BookListScreen(
                                     when {
                                         state.errorMessage != null -> {
                                             Text(
-                                                text = state.errorMessage.toString(),
+                                                text = state.errorMessage.asString(),
                                                 textAlign = TextAlign.Center,
                                                 style = MaterialTheme.typography.headlineSmall,
                                                 color = MaterialTheme.colorScheme.error
