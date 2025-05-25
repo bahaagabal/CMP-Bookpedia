@@ -4,6 +4,7 @@ import com.plcoding.bookpedia.book.data.network.ApiService
 import com.plcoding.bookpedia.book.data.network.ApiServiceImpl
 import com.plcoding.bookpedia.book.data.repository.BookRepositoryImpl
 import com.plcoding.bookpedia.book.domain.BookRepository
+import com.plcoding.bookpedia.book.presentation.book_details.BookDetailsViewModel
 import com.plcoding.bookpedia.book.presentation.book_list.BookListViewModel
 import com.plcoding.bookpedia.book.presentation.book_list.SelectedBookViewModel
 import com.plcoding.bookpedia.core.data.HttpClientFactory
@@ -26,4 +27,6 @@ val sharedModules = module {
     viewModelOf(::BookListViewModel)
 
     viewModelOf(::SelectedBookViewModel)
+
+    viewModelOf(::BookDetailsViewModel)
 }

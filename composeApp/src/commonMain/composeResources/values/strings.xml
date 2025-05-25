@@ -12,4 +12,12 @@
     <string name="error_no_internet">Couldn't reach server, please check your internet connection.</string>
     <string name="error_too_many_requests">Your quota seems to be exceeded.</string>
     <string name="error_serialization">Couldn't parse data.</string>
+    <string name="go_back">Go Back</string>
+    <string name="book_cover">selected book cover</string>
+    <string name="remove_from_favourite">Remove Book From Favourite</string>
+    <string name="add_to_favourite"> add book to favourite</string>
+    <string name="rating">Rating</string>
+    <string name="pages">Pages</string>
+    <string name="languages"> Languages</string>
+    <string name="synopsis">Synopsis</string>
 </resources>

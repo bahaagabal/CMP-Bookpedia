@@ -49,7 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BookListScreenRoot(
-    bookListViewModel: BookListViewModel = koinViewModel(),
+    bookListViewModel: BookListViewModel,
     onBookItemClicked: (Book) -> Unit
 ) {
 
