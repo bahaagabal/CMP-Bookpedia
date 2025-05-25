@@ -17,4 +17,11 @@ class BookRepositoryImpl(
             it.results.toBooksList()
         }
     }
+
+    override suspend fun getBookDescription(bookId: String): Result<String?, DataError> {
+        return apiService.getBookDescription(bookId)
+            .map {
+                it.description
+            }
+    }
 }

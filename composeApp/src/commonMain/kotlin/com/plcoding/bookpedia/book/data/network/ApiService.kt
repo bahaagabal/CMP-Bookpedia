@@ -1,5 +1,6 @@
 package com.plcoding.bookpedia.book.data.network
 
+import com.plcoding.bookpedia.book.data.dto.BookWorkDto
 import com.plcoding.bookpedia.book.data.dto.SearchedBookResponseDto
 import com.plcoding.bookpedia.core.domain.DataError
 import com.plcoding.bookpedia.core.domain.Result
@@ -10,4 +11,7 @@ interface ApiService {
         query: String,
         resultLimit: Int? = null
     ): Result<SearchedBookResponseDto, DataError.Remote>
+
+    suspend fun getBookDescription(bookId: String):
+            Result<BookWorkDto, DataError.Remote>
 }

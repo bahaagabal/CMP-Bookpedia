@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,10 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cmp_bookpedia.composeapp.generated.resources.Res
+import cmp_bookpedia.composeapp.generated.resources.description_not_available
 import cmp_bookpedia.composeapp.generated.resources.languages
 import cmp_bookpedia.composeapp.generated.resources.pages
 import cmp_bookpedia.composeapp.generated.resources.rating
@@ -186,12 +189,28 @@ fun BookDetailsScreen(
                         )
                 )
 
+                when {
+                    state.isLoading -> CircularProgressIndicator()
+                    state.error != null -> {
+                        Text(
+                            text = state.error.asString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Justify,
+                        )
+                    }
 
-                Text(
-                    text = "Hello All How are you Hope to be fine thank you",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Justify,
-                )
+                    else -> {
+                        val description = state.book.description
+                        Text(
+                            text = if (description.isNullOrBlank()) stringResource(Res.string.description_not_available) else description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Justify,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            color = if (description.isNullOrBlank()) Color.Black.copy(alpha = 0.4f) else Color.Black
+                        )
+                    }
+                }
+
 
             }
 
