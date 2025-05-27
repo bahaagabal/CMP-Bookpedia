@@ -1,5 +1,8 @@
 package com.plcoding.bookpedia.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.plcoding.bookpedia.book.data.database.DatabaseFactory
+import com.plcoding.bookpedia.book.data.database.FavouriteBookDatabase
 import com.plcoding.bookpedia.book.data.network.ApiService
 import com.plcoding.bookpedia.book.data.network.ApiServiceImpl
 import com.plcoding.bookpedia.book.data.repository.BookRepositoryImpl
@@ -23,6 +26,16 @@ val sharedModules = module {
     singleOf(::ApiServiceImpl).bind<ApiService>()
 
     singleOf(::BookRepositoryImpl).bind<BookRepository>()
+
+    single {
+        get<DatabaseFactory>().create()
+            .setDriver(BundledSQLiteDriver())
+            .build()
+    }
+
+    single {
+        get<FavouriteBookDatabase>().favouriteBookDao
+    }
 
     viewModelOf(::BookListViewModel)
 

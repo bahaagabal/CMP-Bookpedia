@@ -11,6 +11,8 @@ import com.plcoding.bookpedia.core.domain.onSuccess
 import com.plcoding.bookpedia.core.presentation.toUiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,6 +27,7 @@ class BookDetailsViewModel(
     val state = _state
         .onStart {
             getBookDescription()
+            observeForFavouriteStatus()
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
@@ -35,7 +38,10 @@ class BookDetailsViewModel(
     fun onAction(action: BookDetailsAction) {
         when (action) {
             BookDetailsAction.OnBackClick -> {}
-            BookDetailsAction.OnFavouriteClick -> {}
+            BookDetailsAction.OnFavouriteClick -> {
+                updateFavoriteStatus()
+            }
+
             is BookDetailsAction.OnSelectedBookChange -> {
                 _state.update {
                     it.copy(
@@ -45,6 +51,27 @@ class BookDetailsViewModel(
             }
         }
     }
+
+    private fun updateFavoriteStatus() = viewModelScope.launch {
+        if (state.value.isFavourite) {
+            bookRepository.deleteFavouriteBook(bookId)
+        } else {
+            state.value.book?.let {
+                bookRepository.addBookToFavourite(it)
+            }
+        }
+    }
+
+    private fun observeForFavouriteStatus() =
+        bookRepository
+            .isBookFavourite(bookId)
+            .onEach { isFavourite ->
+                _state.update {
+                    it.copy(
+                        isFavourite = isFavourite
+                    )
+                }
+            }.launchIn(viewModelScope)
 
     private fun getBookDescription() = viewModelScope.launch {
         _state.update {

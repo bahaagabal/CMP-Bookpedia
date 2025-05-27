@@ -7,12 +7,15 @@ import com.plcoding.bookpedia.book.domain.BookRepository
 import com.plcoding.bookpedia.core.domain.onError
 import com.plcoding.bookpedia.core.domain.onSuccess
 import com.plcoding.bookpedia.core.presentation.toUiText
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -25,12 +28,14 @@ class BookListViewModel(private val bookRepository: BookRepository) : ViewModel(
 
     private val cachedBooks = emptyList<Book>()
     private var searchJob: Job? = null
+    private var favouriteBooksJob: Job? = null
     private val _state = MutableStateFlow(BookListState())
     val state = _state
         .onStart {
             if (cachedBooks.isEmpty()) {
                 observeForSearchQuery()
             }
+            observeForFavouriteBooks()
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
@@ -58,6 +63,20 @@ class BookListViewModel(private val bookRepository: BookRepository) : ViewModel(
                 }
             }
         }
+    }
+
+    private fun observeForFavouriteBooks(){
+        favouriteBooksJob?.cancel()
+        favouriteBooksJob = bookRepository.getFavouriteBooks()
+            .onEach { favouriteBooks ->
+                _state.update {
+                    it.copy(
+                        favouriteBooks = favouriteBooks
+                    )
+                }
+            }
+            .flowOn(Dispatchers.IO)
+            .launchIn(viewModelScope)
     }
 
 

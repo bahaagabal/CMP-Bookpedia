@@ -70,7 +70,9 @@ fun BookDetailsScreen(
     BlurredImageBackground(
         imageUrl = state.book?.imageUrl,
         isFavourite = state.isFavourite,
-        onFavouriteClick = {},
+        onFavouriteClick = {
+            onAction(BookDetailsAction.OnFavouriteClick)
+        },
         onBackClick = { onAction(BookDetailsAction.OnBackClick) },
         modifier = Modifier.fillMaxSize()
     ) {
