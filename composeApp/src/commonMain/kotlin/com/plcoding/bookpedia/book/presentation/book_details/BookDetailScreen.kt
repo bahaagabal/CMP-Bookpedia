@@ -52,11 +52,9 @@ fun BookDetailScreenRoot(
     BookDetailsScreen(
         state,
         onAction = {
-            when (it) {
-                BookDetailsAction.OnBackClick -> onBackClick()
-                else -> Unit
-            }
             viewModel.onAction(it)
+        }, onBackClick = {
+            onBackClick.invoke()
         })
 }
 
@@ -64,7 +62,8 @@ fun BookDetailScreenRoot(
 @Composable
 fun BookDetailsScreen(
     state: BookDetailsState,
-    onAction: (BookDetailsAction) -> Unit
+    onAction: (BookDetailsAction) -> Unit,
+    onBackClick: () -> Unit
 ) {
 
     BlurredImageBackground(
@@ -73,7 +72,7 @@ fun BookDetailsScreen(
         onFavouriteClick = {
             onAction(BookDetailsAction.OnFavouriteClick)
         },
-        onBackClick = { onAction(BookDetailsAction.OnBackClick) },
+        onBackClick = { onBackClick() },
         modifier = Modifier.fillMaxSize()
     ) {
         state.book?.let {

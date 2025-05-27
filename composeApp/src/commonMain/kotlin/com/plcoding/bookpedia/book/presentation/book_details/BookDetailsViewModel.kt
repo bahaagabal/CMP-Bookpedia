@@ -37,7 +37,6 @@ class BookDetailsViewModel(
     private val bookId = savedStateHandle.toRoute<Route.BookDetails>().bookId
     fun onAction(action: BookDetailsAction) {
         when (action) {
-            BookDetailsAction.OnBackClick -> {}
             BookDetailsAction.OnFavouriteClick -> {
                 updateFavoriteStatus()
             }

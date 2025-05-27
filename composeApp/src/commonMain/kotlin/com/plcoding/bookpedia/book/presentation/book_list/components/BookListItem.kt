@@ -45,6 +45,7 @@ import com.plcoding.bookpedia.core.presentation.LightBlue
 import com.plcoding.bookpedia.core.presentation.PulseAnimation
 import com.plcoding.bookpedia.core.presentation.SandYellow
 import org.jetbrains.compose.resources.painterResource
+import kotlin.math.round
 
 @Composable
 fun BookListItem(
@@ -155,7 +156,7 @@ fun BookListItem(
                     ) {
 
                         Text(
-                            text = it.toString(),
+                            text = "${round(it * 10) / 10.0}",
                             style = MaterialTheme.typography.bodyMedium,
                         )
 

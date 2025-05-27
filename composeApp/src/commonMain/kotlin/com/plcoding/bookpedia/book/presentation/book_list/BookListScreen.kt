@@ -58,18 +58,18 @@ fun BookListScreenRoot(
     BookListScreen(
         state = state,
         onAction = { action ->
-            when (action) {
-                is BookListAction.OnBookItemClicked -> onBookItemClicked(action.book)
-                else -> Unit
-            }
             bookListViewModel.onAction(action)
+        },
+        onBookItemClicked = { book ->
+            onBookItemClicked.invoke(book)
         })
 }
 
 @Composable
 fun BookListScreen(
     state: BookListState,
-    onAction: (BookListAction) -> Unit
+    onAction: (BookListAction) -> Unit,
+    onBookItemClicked: (Book) -> Unit
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -216,7 +216,7 @@ fun BookListScreen(
                                             BookList(
                                                 booksList = state.searchResults,
                                                 onBookItemClicked = {
-                                                    onAction(BookListAction.OnBookItemClicked(it))
+                                                    onBookItemClicked(it)
                                                 },
                                                 modifier = Modifier.fillMaxSize()
                                                     .padding(vertical = 8.dp),
@@ -244,7 +244,7 @@ fun BookListScreen(
                                     BookList(
                                         booksList = state.favouriteBooks,
                                         onBookItemClicked = {
-                                            onAction(BookListAction.OnBookItemClicked(it))
+                                            onBookItemClicked(it)
                                         },
                                         modifier = Modifier.fillMaxSize()
                                             .padding(vertical = 8.dp),

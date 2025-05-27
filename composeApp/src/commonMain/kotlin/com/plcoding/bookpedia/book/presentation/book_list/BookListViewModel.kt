@@ -45,9 +45,6 @@ class BookListViewModel(private val bookRepository: BookRepository) : ViewModel(
 
     fun onAction(action: BookListAction) {
         when (action) {
-            is BookListAction.OnBookItemClicked -> {
-
-            }
 
             is BookListAction.OnSearchQueryChange -> {
                 _state.update {
